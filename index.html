@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgentPay — pay agents by name</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="logo">P</div>
+      <div>
+        <h1>AgentPay</h1>
+        <div class="tag">Agent-to-agent payments by .ai name</div>
+      </div>
+    </div>
+    <div class="walletbar">
+      <span class="who" id="who"><span class="dot"></span><span class="handle" id="whoHandle"></span></span>
+      <button class="primary" id="connectBtn">Connect wallet</button>
+    </div>
+  </header>
+
+  <p class="tagline">
+    Pay any registered agent by its <strong>.ai name</strong> — no wallet addresses to copy,
+    no middleman holding your money. Invoices, tips and on-chain receipts for the agent economy.
+    Funds move directly from payer to payee in a single transaction; AgentPay never takes custody.
+  </p>
+
+  <div id="banner"></div>
+
+  <!-- ======================= HOME ======================= -->
+  <main id="view-home">
+    <div class="grid">
+      <section class="panel" id="profilePanel">
+        <h2>Your pay page</h2>
+        <p class="sub">Register the Agent ID handle you hold and share your page — anyone with an Agent ID can pay or tip you by name.</p>
+        <div id="profileBody"><p class="loading">Connect your wallet to see your profile.</p></div>
+      </section>
+
+      <section class="panel" id="tipPanel">
+        <h2>Tip an agent</h2>
+        <p class="sub">Send a BNB tip to any agent that has registered on AgentPay.</p>
+        <label class="f" for="tipHandle">Agent handle</label>
+        <input type="text" id="tipHandle" placeholder="e.g. renx or renx.ai" autocomplete="off">
+        <div class="formrow">
+          <div>
+            <label class="f" for="tipAmount">Amount (BNB)</label>
+            <input type="text" id="tipAmount" placeholder="0.01" inputmode="decimal">
+          </div>
+          <div>
+            <label class="f" for="tipMemo">Memo (optional)</label>
+            <input type="text" id="tipMemo" placeholder="Thanks!">
+          </div>
+        </div>
+        <p style="margin-top:14px"><button class="primary" id="tipBtn" data-write>Send tip</button></p>
+      </section>
+    </div>
+
+    <section class="panel" id="createPanel">
+      <h2>Create a payment request</h2>
+      <p class="sub">An invoice payable by name. Share the link — the payer needs an Agent ID and confirms the payment in their own wallet.</p>
+      <label class="f">Currency</label>
+      <div class="formrow">
+        <select id="reqTokenType">
+          <option value="bnb">BNB</option>
+          <option value="erc20">ERC-20 token</option>
+        </select>
+        <input type="text" id="reqTokenAddr" placeholder="Token contract address" class="hidden" autocomplete="off">
+      </div>
+      <div class="formrow">
+        <div>
+          <label class="f" for="reqAmount">Amount</label>
+          <input type="text" id="reqAmount" placeholder="0.05" inputmode="decimal">
+        </div>
+        <div>
+          <label class="f" for="reqExpiry">Expires (optional)</label>
+          <input type="datetime-local" id="reqExpiry">
+        </div>
+      </div>
+      <label class="f" for="reqMemo">Memo</label>
+      <input type="text" id="reqMemo" placeholder="What is this payment for?">
+      <label class="check"><input type="checkbox" id="reqReusable"> Reusable — can be paid many times (open tab)</label>
+      <p style="margin-top:14px"><button class="primary" id="createReqBtn" data-write>Create request</button></p>
+      <div id="createResult"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Live payments</h2>
+      <p class="sub">The most recent payments and tips recorded on-chain.</p>
+      <div id="feed"><p class="loading">Loading…</p></div>
+    </section>
+  </main>
+
+  <!-- ======================= PAY PAGE ======================= -->
+  <main id="view-pay" class="hidden">
+    <p><a href="#/">&larr; Back to AgentPay</a></p>
+    <section class="panel" id="payProfile"><p class="loading">Loading profile…</p></section>
+    <section class="panel">
+      <h2>Open requests from this agent</h2>
+      <p class="sub">Payment requests this agent has created and not yet closed.</p>
+      <div id="payRequests"><p class="loading">Loading…</p></div>
+    </section>
+  </main>
+
+  <!-- ======================= REQUEST PAGE ======================= -->
+  <main id="view-req" class="hidden">
+    <p><a href="#/">&larr; Back to AgentPay</a></p>
+    <section class="panel" id="reqDetail"><p class="loading">Loading request…</p></section>
+  </main>
+
+  <footer class="foot">
+    AgentPay is an independent open-source project and is not affiliated with Binance.
+    Payments are final once confirmed on-chain and cannot be reversed by anyone.
+    Cryptocurrency values are volatile — only send amounts you can afford to lose.
+    This site never asks for a seed phrase or private key; every transaction is confirmed by you in your own wallet.
+  </footer>
+</div>
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+<script src="config.js"></script>
+<script src="abi.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
